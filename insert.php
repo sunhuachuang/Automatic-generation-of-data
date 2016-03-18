@@ -80,7 +80,7 @@ function format($table, $list)
                 break;
             }
 
-            $min = -2147483648;
+            $min = $l == 11 ? 0 : -2147483648;//11 maybe mean > 0
             $max = 2147483647;
             array_push($f['fn'], 'getRandomNumber');
             $start = max('-'.str_repeat(9, $l), $min);
@@ -104,9 +104,9 @@ function format($table, $list)
 
         case 'tinyint':
             $v = $f['fields'][$key];//boolean
-            if(stristr($v, 'flag') || stristr($v, 'is') || stristr($v, 'or') || stristr($v, 'bool')) {
-                array_push($f['fn'], 'getRandomNumber');
-                array_push($f['param'], [-0.9, 1]);
+            if($l ==1 || stristr($v, 'flag') || stristr($v, 'is') || stristr($v, 'or') || stristr($v, 'bool')) {
+                array_push($f['fn'], 'getBoolean');
+                array_push($f['param'], [0, 1]);
                 break;
             }
             if(stristr($f['fields'][$key], 'age')) {
@@ -159,7 +159,7 @@ function format($table, $list)
         case 'varchar':
             if(stristr($f['fields'][$key], 'name')) {
                 array_push($f['fn'], 'getName');
-                array_push($f['param'], [1, $l, $f['fields'][$key], $table]);
+                array_push($f['param'], [$f['fields'][$key], $table]);
                 break;
             }
 
@@ -176,7 +176,7 @@ function format($table, $list)
         case 'tinytext':
             if(stristr($f['fields'][$key], 'name')) {
                 array_push($f['fn'], 'getName');
-                array_push($f['param'], [1, $l, $f['fields'][$key], $table]);
+                array_push($f['param'], [$f['fields'][$key], $table]);
                 break;
             }
 

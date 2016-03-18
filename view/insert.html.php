@@ -51,8 +51,8 @@
                     <td><?php echo $values['keys'][$i]; ?></td>
                     <td><?php echo $values['defaults'][$i]; ?></td>
                     <td><input type="text" name="values[<?php echo $values['fields'][$i] ?>][fn]" value="<?php echo $values['fn'][$i]; ?>" /></td>
-                    <td><input type="number" name="values[<?php echo $values['fields'][$i] ?>][min]" value="<?php echo $values['param'][$i][0]; ?>" /></td>
-                    <td><input type="number" name="values[<?php echo $values['fields'][$i] ?>][max]" value="<?php echo $values['param'][$i][1]; ?>" /></td>
+                    <td><input type="text" name="values[<?php echo $values['fields'][$i] ?>][min]" value="<?php echo $values['param'][$i][0]; ?>" /></td>
+                    <td><input type="text" name="values[<?php echo $values['fields'][$i] ?>][max]" value="<?php echo $values['param'][$i][1]; ?>" /></td>
                     <td>en<td>
                   </tr>
                   <?php } ?>

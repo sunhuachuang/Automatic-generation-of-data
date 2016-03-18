@@ -47,23 +47,24 @@ for($i = 0; $i < $number; $i++) {
 }
 
 $mysqli->close();
-
 echo $num, ' times ok';
+echo '<hr';
+
 
 /***********************
  * function to create *
  ***********************/
 
 //create name
-//@param 0=>min, 1=>max, 2=>columnName, 3 => tableName
+//@param 0 =>column name, 1 => table name
 function getName($param)
 {
-    $name  = $param[2];
-    $table = $param[3];
-    $min   = $param[0];
-    $max   = $param[1];
-    if($name == 'username' || $table == ('user' || 'users')) {
-        $preName = array_rand('demo', 'user', 'vistor', 'guest', 'admin', 'Tom', 'Jack');
+    $name  = $param[0];
+    $table = $param[1];
+    if($name == 'username' || $table == 'user' || $table == 'users') {
+        $array = ['demo', 'user', 'vistor', 'guest', 'admin', 'Tom', 'Jack'];
+        $preKey = array_rand($array);
+        $preName = $array[$preKey];
         return '"' . $preName . mt_rand(0000, 9999) . '"';
     }
 
@@ -81,7 +82,7 @@ function getEmail($param)
     $min = max($param[0], 2) - 12; //except @example.com
     $max = min($param[1], 10);
     $string = 'abcdefghigklmnopqrstuvwxyz0123456789';
-    return '"' . substr(str_shuffle($string), 0, rand($min, $max)) . '@example.com"';
+    return '"' . substr(str_shuffle($string), 0, mt_rand($min, $max)) . '@example.com"';
 }
 
 //create age
@@ -90,7 +91,7 @@ function getAge($param)
 {
     $min = max($param[0], 1);
     $max = min($param[1], 150);
-    return '"' . rand($min, $max) . '"';
+    return '"' . mt_rand($min, $max) . '"';
 }
 
 //create string
@@ -100,7 +101,12 @@ function getRandomString($param)
     $min = $param[0];
     $max = $param[1];
     $string = 'abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ';//can insert from outside
-    return '"' . substr(str_shuffle($string), 0, rand($min, $max)) . '"';
+    return '"' . substr(str_shuffle($string), 0, mt_rand($min, $max)) . '"';
+}
+
+function getBoolean($param)
+{
+    return getRandomNumber([-0.9, 1.1]);
 }
 
 //create number
@@ -109,7 +115,7 @@ function getRandomNumber($param)
 {
     $start = $param[0];
     $start = $param[1];
-    return '"' . rand($start, $end) . '"';
+    return '"' . mt_rand($start, $end) . '"';
 }
 
 //create float
@@ -120,7 +126,7 @@ function getRandomFloat($param)
     $end   = $param[1];
     $d     = $param[2] ?: 2;
     $m = str_repeat(9, $d);
-    return  '"' . rand($start, $end).'.'.rand(0, $m) . '"';
+    return  '"' . mt_rand($start, $end).'.'.rand(0, $m) . '"';
 }
 
 //create time
