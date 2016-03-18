@@ -24,20 +24,18 @@ $_SESSION['database'] = $database;
 $_SESSION['name'] = $name;
 $_SESSION['password'] = $password;
 
-$mysqli->close();
+//$tableQuery = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA LIKE ". $database;
+$tableQuery = "SHOW TABLES from ".$database;
+if(!$results = $mysqli->query($tableQuery)) {
+    die('failure');
+}
 
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>auto data creater</title>
-</head>
-<body>
-  <form action="./insert.php">
-    table_name:  <input type="text" name="table" value="user"></br>
-    number:   <input type="text" name="number" value="1"></br>
-    <input type="submit" />
-  </form>
-</body>
-</html>
+$tables = [];
+while($row = mysqli_fetch_assoc($results)){
+    $tables[] = $row;
+}
+
+$name = 'Tables_in_'.$database;
+
+$mysqli->close();
+include './view/action.html.php';

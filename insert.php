@@ -50,23 +50,23 @@ while($row = mysqli_fetch_assoc($results)){
     array_push($list['defaults'], $row['Default']);
 }
 
-$format = format($list);
+$format = format($table, $list);
 
 $values = array_merge($list, $format);
 $columnNumber = count($values['fields']);
 
-include 'insert.html.php';
+include './view/insert.html.php';
 
 //@param $list array
 //@return $f ['fields'=>[], 'fn'=>[]]
-function format($list)
+function format($table, $list)
 {
     $f = [];
     $f['fields'] = $list['fields'];
     $f['fn'] = [];
     $f['param'] = [];
 
-    foreach($list['types'] as $type) {
+    foreach($list['types'] as $key => $type) {
 
         $tmp = explode('(', $type);
         $t = $tmp[0];
@@ -74,6 +74,12 @@ function format($list)
         switch ($t)
         {
         case 'int':
+            if(stristr($f['fields'][$key], 'age')) {
+                array_push($f['fn'], 'getAge');
+                array_push($f['param'], [1, 150]);
+                break;
+            }
+
             $min = -2147483648;
             $max = 2147483647;
             array_push($f['fn'], 'getRandomNumber');
@@ -83,6 +89,11 @@ function format($list)
             break;
 
         case 'smallint':
+            if(stristr($f['fields'][$key], 'age')) {
+                array_push($f['fn'], 'getAge');
+                array_push($f['param'], [1, 150]);
+                break;
+            }
             $min = -32768;
             $max = 32767;
             array_push($f['fn'], 'getRandomNumber');
@@ -92,6 +103,17 @@ function format($list)
             break;
 
         case 'tinyint':
+            $v = $f['fields'][$key];//boolean
+            if(stristr($v, 'flag') || stristr($v, 'is') || stristr($v, 'or') || stristr($v, 'bool')) {
+                array_push($f['fn'], 'getRandomNumber');
+                array_push($f['param'], [-0.9, 1]);
+                break;
+            }
+            if(stristr($f['fields'][$key], 'age')) {
+                array_push($f['fn'], 'getAge');
+                array_push($f['param'], [1, 150]);
+                break;
+            }
             $min = -128;
             $max = 127;
             array_push($f['fn'], 'getRandomNumber');
@@ -101,6 +123,11 @@ function format($list)
             break;
 
         case 'mediumint':
+            if(stristr($f['fields'], 'age')) {
+                array_push($f['fn'], 'getAge');
+                array_psuh($f['param'], [1, 150]);
+                break;
+            }
             $min = -8388608;
             $max = 8388607;
             array_push($f['fn'], 'getRandomNumber');
@@ -130,11 +157,35 @@ function format($list)
 
         case 'char':
         case 'varchar':
+            if(stristr($f['fields'][$key], 'name')) {
+                array_push($f['fn'], 'getName');
+                array_push($f['param'], [1, $l, $f['fields'][$key], $table]);
+                break;
+            }
+
+            if(stristr($f['fields'][$key], 'email')) {
+                array_push($f['fn'], 'getEmail');
+                array_push($f['param'], [1, $l]);
+                break;
+            }
+
             array_push($f['fn'], 'getRandomString');
             array_push($f['param'], [1, $l]);
             break;
 
         case 'tinytext':
+            if(stristr($f['fields'][$key], 'name')) {
+                array_push($f['fn'], 'getName');
+                array_push($f['param'], [1, $l, $f['fields'][$key], $table]);
+                break;
+            }
+
+            if(stristr($f['fields'][$key], 'email')) {
+                array_push($f['fn'], 'getEmail');
+                array_push($f['param'], [1, $l]);
+                break;
+            }
+
             array_push($f['fn'], 'getRandomString');
             array_push($f['param'], [1, 255]);
             break;

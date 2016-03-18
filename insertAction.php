@@ -50,6 +50,49 @@ $mysqli->close();
 
 echo $num, ' times ok';
 
+/***********************
+ * function to create *
+ ***********************/
+
+//create name
+//@param 0=>min, 1=>max, 2=>columnName, 3 => tableName
+function getName($param)
+{
+    $name  = $param[2];
+    $table = $param[3];
+    $min   = $param[0];
+    $max   = $param[1];
+    if($name == 'username' || $table == ('user' || 'users')) {
+        $preName = array_rand('demo', 'user', 'vistor', 'guest', 'admin', 'Tom', 'Jack');
+        return '"' . $preName . mt_rand(0000, 9999) . '"';
+    }
+
+    if($name == 'name') {
+        return '"' . $table . mt_rand(0000, 9999) . '"';
+    }
+
+    return '"' . $name . mt_rand(0000, 9999) . '"';
+}
+
+//create email
+//@param 0=>min 1=>max default(2,10)
+function getEmail($param)
+{
+    $min = max($param[0], 2) - 12; //except @example.com
+    $max = min($param[1], 10);
+    $string = 'abcdefghigklmnopqrstuvwxyz0123456789';
+    return '"' . substr(str_shuffle($string), 0, rand($min, $max)) . '@example.com"';
+}
+
+//create age
+//@param 0=>min 1=>max default(1,150)
+function getAge($param)
+{
+    $min = max($param[0], 1);
+    $max = min($param[1], 150);
+    return '"' . rand($min, $max) . '"';
+}
+
 //create string
 //@param $min int minlength, $max int maxlength
 function getRandomString($param)
@@ -75,7 +118,7 @@ function getRandomFloat($param)
 {
     $start = $param[0];
     $end   = $param[1];
-    $d     = $param[2];
+    $d     = $param[2] ?: 2;
     $m = str_repeat(9, $d);
     return  '"' . rand($start, $end).'.'.rand(0, $m) . '"';
 }
