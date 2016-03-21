@@ -4,7 +4,7 @@ insert generation data to mysql for test using php.
 ### it can auto create data according to table.
 
 ####NEED:
-1. it need you has php 5.5+(maybe 5.2+).
+1. it need you has php 5.5+.
 2. web server (apache..) to run php.
 3. mysql. (now only support mysql)
 
