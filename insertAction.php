@@ -15,17 +15,18 @@ $mysqli = new mysqli($host, $name, $password, $database);
 
 if ($mysqli->connect_error) {
     die('Connect Error (' . $mysqli->connect_errno . ') '
-            . $mysqli->connect_error);
+            . $mysqli->connect_error.'<a href="./index.html">click</a> to return');
 }
 
 $format = [];
 $format['param'] = [];
 $format['fn'] = [];
 $format['fields'] = array_keys($values);
-
+$format['nulls'] = [];
 foreach($values as $value) {
     array_push($format['param'], [$value['min'], $value['max']]);
     array_push($format['fn'], $value['fn']);
+    array_push($format['nulls'], $value['nulls']);
 }
 
 $sql = "insert into " . $table . "(" . implode(',', $format['fields']) . ") values (" ;
@@ -38,6 +39,14 @@ for($i = 0; $i < $number; $i++) {
 
     $value = [];
     foreach($format['fn'] as $key => $fn) {
+        //nullable half happen
+        if($format['nulls'][$key] === 'YES') {
+            if(rand(0, 10) > 5){
+                array_push($value, 'null');
+                continue;
+            }
+        }
+
         if('getForeign' === $fn) {
             $foreign = getForeign([$mysqli, $table, $format['fields'][$key]]); //array
             if(!$foreign[0]) {

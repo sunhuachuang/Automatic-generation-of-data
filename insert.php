@@ -14,7 +14,7 @@ $mysqli = new mysqli($host, $name, $password, $database);
 
 if ($mysqli->connect_error) {
     die('Connect Error (' . $mysqli->connect_errno . ') '
-            . $mysqli->connect_error);
+            . $mysqli->connect_error.'<a href="./index.html">click</a> to return');
 }
 
 //column
@@ -63,6 +63,7 @@ function format($table, $list)
 {
     $f = [];
     $f['fields'] = $list['fields'];
+    $f['nulls']  = $list['nulls'];
     $f['fn'] = [];
     $f['param'] = [];
 

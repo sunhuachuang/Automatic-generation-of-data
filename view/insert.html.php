@@ -47,11 +47,27 @@
                   <tr>
                     <td><?php echo $values['fields'][$i]; ?></td>
                     <td><?php echo $values['types'][$i]; ?></td>
-                    <td><?php echo $values['nulls'][$i]; ?></td>
+                    <td>
+                      <?php echo $values['nulls'][$i]; ?>
+                      <input type="hidden" name="values[<?php echo $values['fields'][$i] ?>][nulls]" value="<?php echo $values['nulls'][$i]; ?>"/>
+                    </td>
                     <td><?php echo $values['keys'][$i]; ?></td>
                     <td><?php echo $values['defaults'][$i]; ?></td>
-                    <td><input type="text" name="values[<?php echo $values['fields'][$i] ?>][fn]" value="<?php echo $values['fn'][$i]; ?>" /></td>
+                    <td>
+                      <select class="selectFn" data-fn="<?php echo $values['fn'][$i]; ?>" name="values[<?php echo $values['fields'][$i] ?>][fn]">
+                        <option value="getName">name</option>
+                        <option value="getEmail">email</option>
+                        <option value="getAge">age</option>
+                        <option value="getRandomString">random string</option>
+                        <option value="getBoolean">bool</option>
+                        <option value="getRandomNumber">random number</option>
+                        <option value="getRandomFloat">random float</option>
+                        <option value="getRandomTime">random time</option>
+                        <option value="getRandomEnum">random enum</option>
+                        <option value="getForeign">foreign key</option>
+                      </select>
                     <td><input type="text" name="values[<?php echo $values['fields'][$i] ?>][min]" value="<?php echo $values['param'][$i][0]; ?>" /></td>
+                    </td>
                     <td><input type="text" name="values[<?php echo $values['fields'][$i] ?>][max]" value="<?php echo $values['param'][$i][1]; ?>" /></td>
                     <td>en<td>
                   </tr>
@@ -69,5 +85,12 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+          $('.selectFn').val(function(){
+              return $(this).data("fn");
+          });
+      })
+    </script>
   </body>
 </html>

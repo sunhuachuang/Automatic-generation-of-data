@@ -19,7 +19,7 @@ $mysqli = new mysqli($host, $name, $password, $database);
 
 if ($mysqli->connect_error) {
     die('Connect Error (' . $mysqli->connect_errno . ') '
-            . $mysqli->connect_error);
+        . $mysqli->connect_error.'<a href="./index.html">click</a> to return');
 }
 
 if (!$_SESSION['host']) {
