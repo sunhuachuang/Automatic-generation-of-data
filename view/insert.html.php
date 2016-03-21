@@ -69,7 +69,13 @@
                     <td><input type="text" name="values[<?php echo $values['fields'][$i] ?>][min]" value="<?php echo $values['param'][$i][0]; ?>" /></td>
                     </td>
                     <td><input type="text" name="values[<?php echo $values['fields'][$i] ?>][max]" value="<?php echo $values['param'][$i][1]; ?>" /></td>
-                    <td>en<td>
+                    <td>
+                      <select name="values[<?php echo $values['fields'][$i] ?>][lang]">
+                        <option value="en">en</option>
+                        <option value="zh">中文</option>
+                        <option value="jp">日本語</option>
+                      </select>
+                    <td>
                   </tr>
                   <?php } ?>
             <tr>

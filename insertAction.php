@@ -23,10 +23,12 @@ $format['param'] = [];
 $format['fn'] = [];
 $format['fields'] = array_keys($values);
 $format['nulls'] = [];
+$format['lang']  = [];
 foreach($values as $value) {
     array_push($format['param'], [$value['min'], $value['max']]);
     array_push($format['fn'], $value['fn']);
     array_push($format['nulls'], $value['nulls']);
+    array_push($format['lang'], $value['lang']);
 }
 
 $sql = "insert into " . $table . "(" . implode(',', $format['fields']) . ") values (" ;
@@ -56,7 +58,11 @@ for($i = 0; $i < $number; $i++) {
             array_push($value, $foreign[1]);
             continue;
         }
-        array_push($value, $fn($format['param'][$key]) ?: '""');
+        if('en' === $format['lang'][$key]) {
+            array_push($value, $fn($format['param'][$key]) ?: '""');
+        } else {
+            array_push($value, $fn($format['param'][$key], $format['lang'][$key]) ?: '""');
+        }
     }
     $insertSql = $sql . implode(',', $value) . ")";
     echo $insertSql,'<br>';
@@ -81,12 +87,21 @@ echo '<hr';
 
 //create name
 //@param 0 =>column name, 1 => table name
-function getName($param)
+function getName($param, $lang = null)
 {
     $name  = $param[0];
     $table = $param[1];
+
     if($name == 'username' || $table == 'user' || $table == 'users') {
-        $array = ['demo', 'user', 'vistor', 'guest', 'admin', 'Tom', 'Jack'];
+        if($lang === 'zh') {
+            $string = file_get_contents('./lang/zh_name');
+        } else if($lang === 'jp') {
+            $string = file_get_contents('./lang/jp_name');
+        } else {
+            $string = file_get_contents('./lang/en_name');
+        }
+
+        $nameArray = explode(',', $string);
         $preKey = array_rand($array);
         $preName = $array[$preKey];
         return '"' . $preName . mt_rand(0000, 9999) . '"';
@@ -101,7 +116,7 @@ function getName($param)
 
 //create email
 //@param 0=>min 1=>max default(2,10)
-function getEmail($param)
+function getEmail($param, $lang = null)
 {
     $min = max($param[0], 2) - 12; //except @example.com
     $max = min($param[1], 10);
@@ -111,7 +126,7 @@ function getEmail($param)
 
 //create age
 //@param 0=>min 1=>max default(1,150)
-function getAge($param)
+function getAge($param, $lang = null)
 {
     $min = max($param[0], 1);
     $max = min($param[1], 150);
@@ -120,22 +135,47 @@ function getAge($param)
 
 //create string
 //@param $min int minlength, $max int maxlength
-function getRandomString($param)
+function getRandomString($param, $lang = null)
 {
     $min = $param[0];
     $max = $param[1];
-    $string = 'abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ';//can insert from outside
-    return '"' . substr(str_shuffle($string), 0, mt_rand($min, $max)) . '"';
+    $string = '';
+
+    $rand = mt_rand($min, $max);
+    $rand -= fmod($rand,2);//zh and jp 2 bite
+
+    if($lang === 'zh') {
+        $string = file_get_contents('./lang/zh');
+    } else if($lang === 'jp') {
+        $string = file_get_contents('./lang/jp');
+    } else {
+        $string = file_get_contents('./lang/en');
+        return '"' . substr(str_shuffle($string), 0, $rand) . '"';
+    }
+
+    $stringArray = explode(',', $string);
+    $keys = array_rand($stringArray, $rand);
+    $len = count($keys);
+    $stringResult = '';
+    for($i = 0; $i < $len; $i++) {
+        $stringResult .= $stringArray[$keys[$i]];
+    }
+
+    //big variable
+    unset($stringArray);
+    unset($string);
+    //die($stringResult);
+    return '"' . $stringResult . '"';
 }
 
-function getBoolean($param)
+function getBoolean($param, $lang = null)
 {
     return getRandomNumber([-0.9, 1.1]);
 }
 
 //create number
 //@param array $start int, $end int
-function getRandomNumber($param)
+function getRandomNumber($param, $lang = null)
 {
     $start = $param[0];
     $end = $param[1];
@@ -144,7 +184,7 @@ function getRandomNumber($param)
 
 //create float
 //@param array $start float, $end float, $d int
-function getRandomFloat($param)
+function getRandomFloat($param, $lang = null)
 {
     $start = $param[0];
     $end   = $param[1];
@@ -155,7 +195,7 @@ function getRandomFloat($param)
 
 //create time
 //@param array $type string
-function getRandomTime($param)
+function getRandomTime($param, $lang = null)
 {
     $type = $param[0];
     $time = '';
@@ -179,7 +219,7 @@ function getRandomTime($param)
 
 //create enum
 //@param $choice array
-function getRandomEnum($param)
+function getRandomEnum($param, $lang = null)
 {
     return '"' . $param[array_rand($param)] . '"';
 }
@@ -187,7 +227,7 @@ function getRandomEnum($param)
 //get foreign key
 //@param $mysqli, $table, $column
 //@return null(need create) or value(not need create)
-function getForeign($param)
+function getForeign($param, $lang = null)
 {
     $mysqli = $param[0];
     $table  = $param[1];
