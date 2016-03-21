@@ -1,22 +1,10 @@
 <?php
-session_start();
+
+require './mysqli.php';
 
 $table = $_GET['table'];
 $number = (int) ($_GET['number']) ?: 1;
 $values = $_POST['values'];
-
-//session
-$host = $_SESSION['host'];
-$database = $_SESSION['database'];
-$name = $_SESSION['name'];
-$password = $_SESSION['password'];
-
-$mysqli = new mysqli($host, $name, $password, $database);
-
-if ($mysqli->connect_error) {
-    die('Connect Error (' . $mysqli->connect_errno . ') '
-            . $mysqli->connect_error.'<a href="./index.html">click</a> to return');
-}
 
 $format = [];
 $format['param'] = [];
@@ -154,7 +142,7 @@ function getRandomString($param, $lang = null)
     }
 
     $stringArray = explode(',', $string);
-    $keys = array_rand($stringArray, $rand);
+    $keys = array_rand($stringArray, min(count($stringArray), $rand));
     $len = count($keys);
     $stringResult = '';
     for($i = 0; $i < $len; $i++) {
@@ -188,7 +176,11 @@ function getRandomFloat($param, $lang = null)
 {
     $start = $param[0];
     $end   = $param[1];
-    $d     = $param[2] ?: 2;
+    if($ds = explode('.', $end)[1]) {
+        $d = strlen($ds);
+    } else {
+        $d = 2;
+    }
     $m = str_repeat(9, $d);
     return  '"' . mt_rand($start, $end).'.'.rand(0, $m) . '"';
 }

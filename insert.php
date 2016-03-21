@@ -1,21 +1,9 @@
 <?php
-session_start();
+
+require './mysqli.php';
 
 $table = $_GET['table'];
 $number = (int) ($_GET['number']) ?: 1;
-
-//session
-$host = $_SESSION['host'];
-$database = $_SESSION['database'];
-$name = $_SESSION['name'];
-$password = $_SESSION['password'];
-
-$mysqli = new mysqli($host, $name, $password, $database);
-
-if ($mysqli->connect_error) {
-    die('Connect Error (' . $mysqli->connect_errno . ') '
-            . $mysqli->connect_error.'<a href="./index.html">click</a> to return');
-}
 
 //column
 $columnsQuery = "SHOW COLUMNS FROM ".$table;
