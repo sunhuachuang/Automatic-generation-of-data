@@ -130,7 +130,6 @@ function getRandomString($param, $lang = null)
     $string = '';
 
     $rand = mt_rand($min, $max);
-    $rand -= fmod($rand,2);//zh and jp 2 bite
 
     if($lang === 'zh') {
         $string = file_get_contents('./lang/zh');
