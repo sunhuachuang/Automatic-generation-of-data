@@ -5,11 +5,15 @@ $database = $_POST['database'] ?: false;
 $name = $_POST['name'] ?: 'root';
 $password = $_POST['password'] ?: false;
 
-if(!$database || !$password) {
-    die('no password or database');
-}
-
 session_start();
+
+//session
+if ($_SESSION['host']) {
+    $host     = $_SESSION['host'];
+    $database = $_SESSION['database'];
+    $name     = $_SESSION['name'];
+    $password = $_SESSION['password'];
+}
 
 $mysqli = new mysqli($host, $name, $password, $database);
 
@@ -18,11 +22,12 @@ if ($mysqli->connect_error) {
             . $mysqli->connect_error);
 }
 
-//session
-$_SESSION['host'] = $host;
-$_SESSION['database'] = $database;
-$_SESSION['name'] = $name;
-$_SESSION['password'] = $password;
+if (!$_SESSION['host']) {
+    $_SESSION['host'] = $host;
+    $_SESSION['database'] = $database;
+    $_SESSION['name'] = $name;
+    $_SESSION['password'] = $password;
+}
 
 //$tableQuery = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA LIKE ". $database;
 $tableQuery = "SHOW TABLES from ".$database;

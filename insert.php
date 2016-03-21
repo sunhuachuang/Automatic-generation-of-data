@@ -2,7 +2,7 @@
 session_start();
 
 $table = $_GET['table'];
-$number = (int) ($_GET['number']);
+$number = (int) ($_GET['number']) ?: 1;
 
 //session
 $host = $_SESSION['host'];
@@ -21,14 +21,14 @@ if ($mysqli->connect_error) {
 $columnsQuery = "SHOW COLUMNS FROM ".$table;
 
 if(!$results = $mysqli->query($columnsQuery)) {
-    die('failure');
+    die('failure:'.$columnsQuery);
 }
 
 /* row example
     [Field] => id
     [Type] => int(11)
     [Null] => NO
-    [Key] => PRI
+    [Key] => PRI & MUL
     [Default] =>
     [Extra] => auto_increment
  */
@@ -67,6 +67,12 @@ function format($table, $list)
     $f['param'] = [];
 
     foreach($list['types'] as $key => $type) {
+        //MUL
+        if($list['keys'][$key] === 'MUL') {
+            array_push($f['fn'], 'getForeign');
+            array_push($f['param'], [null, null]);
+            continue;
+        }
 
         $tmp = explode('(', $type);
         $t = $tmp[0];
@@ -150,8 +156,9 @@ function format($table, $list)
         case 'float':
             $d = explode(',', $l);// like 3,2(999.99)
             array_push($f['fn'], 'getRandomFloat');
-            $start = '-'.str_repeat(9, $d[0]);
-            $end = str_repeat(9, $d[0]);
+            $start = 0;
+            $end = $d[0] ? str_repeat(9, $d[0] - $d[1]) : 99999999;//default (10, 2)
+
             array_push($f['param'], [$start, $end, $d[1]]);
             break;
 

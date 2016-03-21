@@ -2,7 +2,7 @@
 session_start();
 
 $table = $_GET['table'];
-$number = (int) ($_GET['number']);
+$number = (int) ($_GET['number']) ?: 1;
 $values = $_POST['values'];
 
 //session
@@ -32,12 +32,22 @@ $sql = "insert into " . $table . "(" . implode(',', $format['fields']) . ") valu
 
 $num = 0;//click times
 
+$errors = [];
 //insert
 for($i = 0; $i < $number; $i++) {
 
     $value = [];
     foreach($format['fn'] as $key => $fn) {
-        array_push($value, $fn($format['param'][$key]) ?: null);
+        if('getForeign' === $fn) {
+            $foreign = getForeign([$mysqli, $table, $format['fields'][$key]]); //array
+            if(!$foreign[0]) {
+                $errors[] = 'table '.$foreign[1].' need create first, <a href="./insert.php?table='.$foreign[1].'">click to create</a>';
+                continue;
+            }
+            array_push($value, $foreign[1]);
+            continue;
+        }
+        array_push($value, $fn($format['param'][$key]) ?: '""');
     }
     $insertSql = $sql . implode(',', $value) . ")";
     echo $insertSql,'<br>';
@@ -47,7 +57,12 @@ for($i = 0; $i < $number; $i++) {
 }
 
 $mysqli->close();
-echo $num, ' times ok';
+if($errors)
+{
+    print_r($errors);
+}
+
+echo $num, ' times ok','<a href="./action.php">click return index</a>';
 echo '<hr';
 
 
@@ -114,7 +129,7 @@ function getBoolean($param)
 function getRandomNumber($param)
 {
     $start = $param[0];
-    $start = $param[1];
+    $end = $param[1];
     return '"' . mt_rand($start, $end) . '"';
 }
 
@@ -138,16 +153,16 @@ function getRandomTime($param)
     switch($type)
     {
     case 'date':
-        $time = date('yyyy-mm-dd', time());
+        $time = date('Y-m-d', time());
         break;
     case 'datetime':
-        $time = date('yyyy-mm-dd hh:mm:ss', time());
+        $time = date('Y-m-d h:m:s', time());
         break;
     case 'timestamp':
-        $time = date('yyyymmddhhmmss', time());
+        $time = date('ymdhms', time());
         break;
     case 'time':
-        $time = date('hh:mm:ss', time());
+        $time = date('h:m:s', time());
         break;
     }
     return '"' . $time . '"';
@@ -158,4 +173,50 @@ function getRandomTime($param)
 function getRandomEnum($param)
 {
     return '"' . $param[array_rand($param)] . '"';
+}
+
+//get foreign key
+//@param $mysqli, $table, $column
+//@return null(need create) or value(not need create)
+function getForeign($param)
+{
+    $mysqli = $param[0];
+    $table  = $param[1];
+    $column = $param[2];
+
+    //show create table
+    $query = "show create table ".$table;
+    if(!$tableCreateResult = $mysqli->query($query)) {
+        die('connect mysql failure--show create table:'.$query);
+    }
+
+    $resultQuery = [];
+    while($row = mysqli_fetch_assoc($tableCreateResult)) {
+        $resultQuery = $row;
+    };
+    $string = explode(') ENGINE', stristr($resultQuery['Create Table'], 'FOREIGN KEY'))[0];
+
+    //it is not foreign, so return null
+    if(!$string) {
+        return [true, '""'];
+    }
+
+    $str = explode(',', explode("(`".$column."`) REFERENCES", $string)[1])[0];
+    $foreign = explode("`", $str);
+    $foreignTable = $foreign[1];
+    $foreignColumn = $foreign[3];
+    $foreignQuery = "select ".$foreignColumn." from ".$foreignTable;
+
+    if(!$results = $mysqli->query($foreignQuery)) {
+        die('connect mysql failure--select from foreign:'.$foreignQuery);
+    }
+    $values = [];
+    while($row = mysqli_fetch_assoc($results)) {
+        $values[] = $row[$foreignColumn];
+    }
+    if(!$values) {
+        return [false, $foreignTable];
+    }
+
+    return [true, $values[array_rand($values)]];
 }
