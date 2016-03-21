@@ -11,3 +11,8 @@ insert generation data to mysql for test using php.
 ####SETP:
 1. git clone the code.
 2. run index.html in browser.
+
+####Tip:
+1.if need zh or jp, type must choose random string and give min and max.
+2.float and double. example you want to 1.22222, you need max in 9.99999(five).
+3.if table have foreign key, it's type must foreign key.

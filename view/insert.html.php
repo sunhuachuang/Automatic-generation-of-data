@@ -6,15 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>auto-create-data</title>
 
     <!-- Bootstrap core CSS -->
     <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="starter-template.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -79,7 +77,9 @@
                   </tr>
                   <?php } ?>
             <tr>
-              <td><input type="submit" value="submit"/></td>
+              <td>
+                <input type="submit" class="btn btn-primary" value="submit"/>
+              </td>
             </tr>
             </form>
           </tbody>
@@ -90,7 +90,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
-    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript">
       $(function() {
           $('.selectFn').val(function(){

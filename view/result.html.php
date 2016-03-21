@@ -25,28 +25,23 @@
   </head>
   <body>
     <div class="container">
-      <h2>tables</h2>
+      <h2>table: <?php echo $table;  ?></h2>
       <div>
-        <table class="table">
-          <thead>
-            <th>table</th>
-            <th>number</th>
-            <th>create</th>
-          </thead>
-          <tbody>
-            <?php foreach($tables as $table) { ?>
-                  <tr>
-                    <form name="<?php echo $table[$name]; ?>" action="./insert.php" method="get">
-                      <td><?php echo $table[$name]; ?></td>
-                      <input type="hidden" name="table" value="<?php echo $table[$name]; ?>"/>
-                      <td><input type="number" name="number" value="1" /></td>
-                      <td><button class="btn btn-primary" type="submit">create</button><td>
-                    </form>
-                  </tr>
-                  <?php } ?>
-          </tbody>
-        </table>
+        <h4>sql query:</h4>
+        <?php foreach($sqls as $sql) { ?>
+        <p><?php echo $sql; ?></p>
+        <?php } ?>
       </div>
+      <h4>result:</h4>
+      <?php if($errors) { ?>
+      <div>
+        <h5><span style="color:blue;">errors:</span></h5>
+        <?php foreach($errors as $error) { ?>
+        <p style="color:red"><?php echo $error; ?></p>
+        <?php } ?>
+      </div>
+      <?php } ?>
+      <p><?php echo $num; ?> times ok, <a href="./action.php">click return index</a></p>
     </div><!-- /.container -->
     <!-- Bootstrap core JavaScript
     ================================================== -->

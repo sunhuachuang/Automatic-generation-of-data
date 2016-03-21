@@ -16,7 +16,7 @@ if(!$results = $mysqli->query($columnsQuery)) {
     [Field] => id
     [Type] => int(11)
     [Null] => NO
-    [Key] => PRI & MUL
+    [Key] => PRI & MUL & UNI
     [Default] =>
     [Extra] => auto_increment
  */

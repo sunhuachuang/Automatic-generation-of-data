@@ -23,6 +23,7 @@ $sql = "insert into " . $table . "(" . implode(',', $format['fields']) . ") valu
 
 $num = 0;//click times
 
+$sqls   = [];
 $errors = [];
 //insert
 for($i = 0; $i < $number; $i++) {
@@ -53,21 +54,15 @@ for($i = 0; $i < $number; $i++) {
         }
     }
     $insertSql = $sql . implode(',', $value) . ")";
-    echo $insertSql,'<br>';
+    $sqls[] =  $insertSql;
     if($results = $mysqli->query($insertSql)) {
         $num += 1;
     }
 }
 
 $mysqli->close();
-if($errors)
-{
-    print_r($errors);
-}
 
-echo $num, ' times ok','<a href="./action.php">click return index</a>';
-echo '<hr';
-
+include './view/result.html.php';
 
 /***********************
  * function to create *
