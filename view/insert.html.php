@@ -25,7 +25,7 @@
   </head>
   <body>
     <div class="container">
-      <h2>table: <?php echo $table  ?>结构</h2>
+      <h2>table: <?php echo $table  ?>结构</h2><a href="./action.php">go-to-index</a>
       <div>
         <table class="table">
           <thead>
