@@ -10,8 +10,7 @@
     <title>auto-create-data</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="./view/assets/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
@@ -22,10 +21,48 @@
       <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+        <style type="text/css">
+     img{max-width:100%;}
+     body{
+         font-family: 'Open Sans', sans-serif;
+         background: url(./view/assets/bg.jpg) no-repeat #fff;
+         background-repeat: no-repeat;
+         background-attachment: fixed;
+         background-position: center;
+         background-size: cover;
+         font-weight: 300;
+     }
+
+     /*form*/
+     .form input[type="text"] {
+         font-size: 1em;
+         font-family: 'Open Sans', sans-serif;
+         color: blue;
+         background: transparent;
+         border: 2px solid rgba(216, 216, 216, 0.39);
+         padding: 0.5em 0.5em;
+     }
+     .form input[type="text"] :hover{
+         border:2px solid #0287CC;
+         color: #0287CC;
+         }
+     .form select {
+         font-size: 1em;
+         font-family: 'Open Sans', sans-serif;
+         color: blue;
+         background: transparent;
+         border: 2px solid rgba(216, 216, 216, 0.39);
+         padding: 0.5em 0.5em;
+     }
+     .form select :hover{
+         border:2px solid #0287CC;
+         color: #0287CC;
+     }
+    </style>
   </head>
   <body>
-    <div class="container">
-      <h2>table: <?php echo $table  ?>结构</h2><a href="./action.php">go-to-index</a>
+    <div class="container form">
+      <h2>table: <?php echo $table  ?> desc</h2><a href="./action.php">go-to-index</a>
       <div>
         <table class="table">
           <thead>
@@ -89,7 +126,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="./view/assets/jquery.min.js"></script>
     <script type="text/javascript">
       $(function() {
           $('.selectFn').val(function(){

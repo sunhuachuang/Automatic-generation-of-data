@@ -1,16 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>auto data creater</title>
-</head>
-<body>
-  <form action="./action.php" method="post">
-    mysql_host:      <input type="text" name="host" value="127.0.0.1"></br>
-    database_name:   <input type="text" name="database">(usually null)</br>
-    root_or_user:    <input type="text" name="name" />(usually root)</br>
-    root_password:   <input type="password" name="password" /></br>
-    <input type="submit" />
-  </form>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>auto data creater</title>
+    </head>
+    <style type="text/css">
+     img{max-width:100%;}
+     body{
+         font-family: 'Open Sans', sans-serif;
+         background: url(./view/assets/bg.jpg) no-repeat #fff;
+         background-repeat: no-repeat;
+         background-attachment: fixed;
+         background-position: center;
+         background-size: cover;
+         font-weight: 300;
+     }
+     /*form*/
+     .form {
+         margin: 10em 30%;
+         text-align: center;
+     }
+     .form input[type="text"]{
+         font-size: 0.82355em;
+         font-family: 'Open Sans', sans-serif;
+         color: #B1B1B1;
+         display: block;
+         border: 2px solid rgba(216, 216, 216, 0.39);
+         padding: 0.9em 0.9em;
+         outline: none;
+         text-align: left;
+         -webkit-appearance: none;
+         border-radius: 4px;
+         -webkit-border-radius: 4px;
+         -moz-border-radius: 4px;
+         -o-border-radius: 4px;
+         width: 320px;
+         margin: 20px 10px;
+         transition: 0.5s ease;
+         -o-transition: 0.5s ease;
+         -webkit-transition: 0.5s ease;
+     }
+
+     .form input[type="submit"] {
+         font-size: 1.1em;
+         font-family: 'Open Sans', sans-serif;
+         color: #fff;
+         display: block;
+         border: none;
+         padding: 0.7em 0.9em;
+         outline: none;
+         text-align: center;
+         -webkit-appearance: none;
+         border-radius: 4px;
+         -webkit-border-radius: 4px;
+         -moz-border-radius: 4px;
+         -o-border-radius: 4px;
+         font-weight: bold;
+         width: 352px;
+         margin: 20px 10px 10px;
+         transition: 0.5s ease;
+         -o-transition: 0.5s ease;
+         -webkit-transition: 0.5s ease;
+         outline: none;
+         cursor: pointer;
+         background: #90C842;
+     }
+     .form input[type="submit"]:hover {
+         background:#0287CC;
+         color:#fff;
+     }
+     .form input[type="text"]:hover{
+         border:2px solid #0287CC;
+         color: #0287CC;
+     }
+    </style>
+    <body>
+        <div class="form">
+            <form action="./action.php" method="post">
+                <input type="text" class="active textbox" name="host" value="127.0.0.1">
+                <input type="text" class="textbox" name="database" value="database name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'database name';}">
+                <input type="text" class="textbox" name="name" value="root_or_user" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'root_or_user';}">
+                <input type="text" class="textbox" name="password" value="password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'password';}">
+                <input type="submit" value="begin">
+            </form>
+        </div>
+    </body>
 </html>
