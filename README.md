@@ -1,3 +1,4 @@
+##this is no continue. go to [another](https://github.com/sunhuachuang/pytestdata) build by python.
 # Automatic-generation-of-data
 insert generation data to mysql for test using php.
 
